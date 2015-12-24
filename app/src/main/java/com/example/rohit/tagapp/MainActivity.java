@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         newTag.setVisibility(View.GONE);
         oldTag.setVisibility(View.GONE);
         barTitle = (TextView) findViewById(R.id.textViewTitle);
-
+     //   radioGroup = (RadioGroup) dialogActions.getRadioGroupId();
     }
 
 
@@ -132,12 +132,14 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 //  startActivity(intent);
                 barTitle.setText(myAppInfo.appName);
                 // barTitle.setBackgroundColor(Color.parseColor("#00001a"));
-                customActionBar.setActionBarColor("#00001a");
+                customActionBar.setActionBarColor("#ff1a1a");
+
 
                 oldTag.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialogActions.showDialog(context, myAppInfo.appName); // show dialog box for tags/labels
+
                         confirmButton = (Button) dialogActions.getDialogButtonId();
                         confirmButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -153,6 +155,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                 dialogActions.dismissDialog();
                                 newTag.setVisibility(View.INVISIBLE);
                                 oldTag.setVisibility(View.INVISIBLE);
+
                             }
                         });
                     }

@@ -6,7 +6,7 @@
 
     <RadioGroup
         android:id="@+id/radioGroupdId"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp">
@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"
             android:text="Text"
             android:id="@+id/radioButton1"
-            android:checked="false"
-            android:layout_marginLeft="120dp"
-            android:textAlignment="textStart" />
+            android:checked="true"
+            android:textAlignment="textStart"
+            android:layout_gravity="left|center" />
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -26,8 +26,8 @@
             android:text="browsers"
             android:id="@+id/radioButton2"
             android:checked="false"
-            android:layout_marginLeft="120dp"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            android:layout_gravity="left|center" />
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -35,8 +35,8 @@
             android:text="Shopping"
             android:id="@+id/radioButton3"
             android:checked="false"
-            android:layout_marginLeft="120dp"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            android:layout_gravity="left|center" />
     </RadioGroup>
     <Button
         android:layout_width="wrap_content"
