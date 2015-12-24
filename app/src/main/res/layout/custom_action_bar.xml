@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
 
     <TextView
@@ -16,7 +16,7 @@
         android:singleLine="true"
         android:text="TagApp"
         android:maxWidth="120dp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20dp"
         android:textStyle="bold"
         android:background="@android:color/transparent"
@@ -24,23 +24,28 @@
         android:layout_centerInParent="true" />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/oldTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tag"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
-        android:layout_centerInParent="true" />
+        android:layout_marginRight="40dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/tag"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="50dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/newTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="new tag"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentStart="false"
         android:layout_toStartOf="@id/oldTag"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:src="@mipmap/add1"
+        android:background="@android:color/transparent" />
 
 
 </RelativeLayout>

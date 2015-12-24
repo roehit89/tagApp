@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -46,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
   //  LayoutInflater layoutInflater;
     View dialogView;
     AlertDialog.Builder dialogBuilder;
-    Button confirmButton = null, newTag = null, oldTag = null;
+    Button confirmButton = null;
+    ImageButton newTag = null;
+    ImageButton oldTag = null;
     DialogActions dialogActions;
     RadioGroup radioGroup;
     CustomActionBar customActionBar = new CustomActionBar();
@@ -65,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
          packageManager = getPackageManager();
          new getApplications().execute();
         customActionBar.customActionBar(getSupportActionBar(), context);
-        newTag = (Button)findViewById(R.id.newTag);
-        oldTag = (Button)findViewById(R.id.oldTag);
+        newTag = (ImageButton)findViewById(R.id.newTag);
+        oldTag = (ImageButton)findViewById(R.id.oldTag);
         newTag.setVisibility(View.GONE);
         oldTag.setVisibility(View.GONE);
         barTitle = (TextView) findViewById(R.id.textViewTitle);
@@ -89,7 +92,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 myAppInfo.appName = (String) appInfo.loadLabel(packageManager);
                 myAppInfo.appIcon = appInfo.loadIcon(packageManager);
                 myAppInfo.appTag = ""; // write query here to fetch tag from database.
-                myAppInfo.appTag =  sqlActions.fetchSqlDataByTag(myAppInfo.appName);
+              //  myAppInfo.appTag =  sqlActions.fetchSqlDataByTag(myAppInfo.appName);
 
                 sqlActions.insertValues(myAppInfo.appName,myAppInfo.appIcon.toString(),myAppInfo.appTag);
                 finalData.add(myAppInfo);
@@ -132,7 +135,8 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 //  startActivity(intent);
                 barTitle.setText(myAppInfo.appName);
                 // barTitle.setBackgroundColor(Color.parseColor("#00001a"));
-                customActionBar.setActionBarColor("#ff1a1a");
+
+                customActionBar.setActionBarColor("#29293d");
 
 
                 oldTag.setOnClickListener(new View.OnClickListener() {
