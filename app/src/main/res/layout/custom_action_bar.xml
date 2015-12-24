@@ -2,36 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#831919"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="left|center"
         android:gravity="center"
         android:singleLine="true"
-        android:text="THE TIMES OF INDIA"
+        android:text="TagApp"
         android:textColor="@android:color/black"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:background="#831919"/>
 
 
     <Button
         android:id="@+id/newTag"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginLeft="10dp"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:text="new tag" />
 
     <Button
         android:id="@+id/oldTag"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        />
+        android:text="tag" />
 
 </LinearLayout>

@@ -10,16 +10,28 @@
         android:id="@+id/imageView"
         android:layout_margin="10dp"
         android:maxHeight="20dp"
-        android:maxWidth="20dp" />
+        android:maxWidth="20dp"
+        android:layout_gravity="center" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
+        android:id="@+id/appName"
+        android:layout_gravity="center"
         android:textColor="#272020"
-        android:autoText="false"
+        android:layout_margin="10dp"
         android:gravity="center_vertical" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/appTagName"
+        android:textColor="#272020"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="50dp"
+        android:layout_gravity="center" />
+
 </LinearLayout>

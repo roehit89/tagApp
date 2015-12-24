@@ -5,9 +5,10 @@
     android:id="@+id/labelDialogid">
 
     <RadioGroup
+        android:id="@+id/radioGroupdId"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="20dp">
 
         <RadioButton
@@ -37,4 +38,10 @@
             android:layout_marginLeft="120dp"
             android:textAlignment="textStart" />
     </RadioGroup>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:id="@+id/ConfirmButton"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

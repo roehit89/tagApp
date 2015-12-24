@@ -69,6 +69,7 @@ public class myAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageDrawable(myAppInfo.appIcon);
         viewHolder.appName.setText(myAppInfo.appName);
+        viewHolder.tagName.setText(myAppInfo.appTag);
         return convertView;
     }
 
@@ -76,11 +77,12 @@ public class myAdapter extends BaseAdapter {
 
     public class ViewHolder
     {
-        TextView appName;
+        TextView appName, tagName;
         ImageView imageView;
         public ViewHolder(View item){
-            appName = (TextView)item.findViewById(R.id.textView);
+            appName = (TextView)item.findViewById(R.id.appName);
             imageView = (ImageView) item.findViewById(R.id.imageView);
+            tagName = (TextView)item.findViewById(R.id.appTagName);
         }
     }
 

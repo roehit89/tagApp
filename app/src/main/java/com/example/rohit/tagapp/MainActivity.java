@@ -21,8 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,72 +43,61 @@ public class MainActivity extends AppCompatActivity {
     ArrayList <MyAppInfo>finalData = new ArrayList<MyAppInfo>();
     ListView listView;
     myAdapter myAdapter;
-    LayoutInflater layoutInflater;
+  //  LayoutInflater layoutInflater;
     View dialogView;
     AlertDialog.Builder dialogBuilder;
+    Button confirmButton = null, newTag = null, oldTag = null;
     DialogActions dialogActions;
+    RadioGroup radioGroup;
+    CustomActionBar customActionBar = new CustomActionBar();
+    SqlActions sqlActions;
+    TextView barTitle = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-
+        sqlActions = new SqlActions(context);
+        dialogActions = new DialogActions(this, context);
+        //DialogActions(context);
          packageManager = getPackageManager();
          new getApplications().execute();
-        customActionBar();
+        customActionBar.customActionBar(getSupportActionBar(), context);
+        newTag = (Button)findViewById(R.id.newTag);
+        oldTag = (Button)findViewById(R.id.oldTag);
+        newTag.setVisibility(View.GONE);
+        oldTag.setVisibility(View.GONE);
+        barTitle = (TextView) findViewById(R.id.textViewTitle);
 
-//        final Dialog dialog = new Dialog(context);
-//        dialog.setContentView(R.layout.labeldialog);
-//        dialog.setTitle("hello");
-//        dialog.show();
-
-        }
-    private void customActionBar() {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-     //   actionBar.setBackgroundDrawable(new ColorDrawable(Color.argb(255, 255, 255, 255)));
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false); /// used to get back button on actionbar
-        actionBar.setDisplayShowTitleEnabled(false);// to show name of app as title
-        actionBar.setDisplayShowCustomEnabled(true);
-
-
-         layoutInflater = LayoutInflater.from(this);
-        View customView = layoutInflater.inflate(R.layout.custom_toi, null);
-        actionBar.setCustomView(customView);
-
-
-
-      //  ActionBar.LayoutParams layout = new ActionBar.LayoutParams(ActionBar.LayoutParams.FILL_PARENT,
-    //            AbsListView.LayoutParams.FILL_PARENT);
-      //  ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.custom_toi, null);
-      //  actionBar.setCustomView(actionBarLayout, layout);
     }
 
 
- //   }
-
 public class getApplications extends AsyncTask<Void, Void, Void>{
 
-  //  PackageManager packageManager = ;
+
     ArrayList <ApplicationInfo> appList = new ArrayList<ApplicationInfo>();
 
     @Override
     protected Void doInBackground(Void... params) {
-      //  packageManager = getPackageManager();
-        // appInfo;
-
         appList = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(packageManager.GET_META_DATA);
-        //Collections.sort(appList, appInfo.name); // try and sort list
+      //  Collections.sort(appList, appInfo.name); // try and sort list
 
         for( ApplicationInfo appInfo : appList)
         {
-            MyAppInfo myAppInfo = new MyAppInfo();
-            myAppInfo.appName = (String) appInfo.loadLabel(packageManager);
-            myAppInfo.appIcon = appInfo.loadIcon(packageManager);
+            if(packageManager.getLaunchIntentForPackage(appInfo.packageName)!=null) { // display only installed apps.
+                MyAppInfo myAppInfo = new MyAppInfo();
+                myAppInfo.appName = (String) appInfo.loadLabel(packageManager);
+                myAppInfo.appIcon = appInfo.loadIcon(packageManager);
+                myAppInfo.appTag = ""; // write query here to fetch tag from database.
+                myAppInfo.appTag =  sqlActions.fetchSqlDataByTag(myAppInfo.appName);
 
-          //  finaldata.add(appInfo);
-            finalData.add(myAppInfo);
+                sqlActions.insertValues(myAppInfo.appName,myAppInfo.appIcon.toString(),myAppInfo.appTag);
+
+                //  finaldata.add(appInfo);
+                finalData.add(myAppInfo);
+            }
         }
 //        Collections.sort(finaldata);
 
@@ -119,26 +113,69 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
         super.onPostExecute(aVoid);
         Log.i(TAG + " came in post execute", "main");
         listView.setAdapter(myAdapter);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                newTag.setVisibility(View.INVISIBLE);
+                oldTag.setVisibility(View.INVISIBLE);
+                barTitle.setText("TagApp");
+                // view.setBackground(new ColorDrawable(Color.parseColor("#ffffff")));
+                customActionBar.setActionBarColor("#831919");
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
+
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-              //  ApplicationInfo app = (ApplicationInfo) finaldata.get(position);
+                //  ApplicationInfo app = (ApplicationInfo) finaldata.get(position);
 
-                MyAppInfo myAppInfo = finalData.get(position);
 
+                //   view.setBackground(new ColorDrawable(Color.parseColor("#f3f1f3")));
+
+                final MyAppInfo myAppInfo = finalData.get(position);
+
+                newTag.setVisibility(View.VISIBLE);
+                oldTag.setVisibility(View.VISIBLE);
                 //Intent intent = packageManager.getLaunchIntentForPackage(app.packageName); // this is used to launch app.
-              //  startActivity(intent);
-                TextView barTitle = (TextView) findViewById(R.id.textViewTitle);
+                //  startActivity(intent);
+                //  barTitle = (TextView) findViewById(R.id.textViewTitle);
                 //barTitle.setText(app.loadLabel(packageManager)); // to get app name.
                 barTitle.setText(myAppInfo.appName);
+                // barTitle.setBackgroundColor(Color.parseColor("#00001a"));
+                customActionBar.setActionBarColor("#00001a");
 
-                dialogActions.showDialog(context);
-//
-//        final Dialog dialog = new Dialog(context);
-//        dialog.setContentView(R.layout.labeldialog);
-//        dialog.setTitle("hello");
-//        dialog.show();
+
+                oldTag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogActions.showDialog(context, myAppInfo.appName); // show dialog box for tags/labels
+                        confirmButton = (Button) dialogActions.getDialogButtonId();
+
+                        confirmButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                radioGroup = (RadioGroup) dialogActions.getRadioGroupId();
+                                Log.i(TAG, dialogActions.checkedRadioButtonText(radioGroup));
+                                //  Log.i(TAG, String.valueOf(dialogActions.getCh);
+                                //    String radiovalue = ((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+                                myAppInfo.appTag = dialogActions.checkedRadioButtonText(radioGroup);
+                                sqlActions.updateTable(myAppInfo.appTag, myAppInfo.appName);// update tag
+                             //   sqlActions.fetchSqlDataByTag("browsers");
+                                myAdapter.notifyDataSetChanged(); // notify that data was changed.
+                                dialogActions.dismissDialog();
+                                newTag.setVisibility(View.INVISIBLE);
+                                oldTag.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
+                });
 
 //                dialogView = layoutInflater.inflate(R.layout.labeldialog,null);
 //                dialogBuilder = new AlertDialog.Builder(context);
@@ -147,10 +184,22 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
 //                dialogBuilder.setView(dialogView);
 //                dialogBuilder.create();
 //                dialogBuilder.show();
-
+                //newTag.setVisibility(View.GONE);
                 return false;
             }
         });
+        newTag.setVisibility(View.INVISIBLE);
+
+        ArrayList<MyAppInfo> test = sqlActions.getAllApps();
+
+//
+//        for(MyAppInfo obj: test)
+//        {
+//            Log.i("app tag ",obj.appTag);
+//            Log.i("app name ",obj.appName);
+//           // Log.i("app icon ", String.valueOf(obj.appIcon));
+//        }
+
     }
 }
 
