@@ -2,8 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/labelDialogid">
+    android:id="@+id/labelDialogid"
+    android:weightSum="1">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="164dp"
+        android:layout_weight="0.39">
     <RadioGroup
         android:id="@+id/radioGroupdId"
         android:layout_width="wrap_content"
@@ -14,7 +19,7 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text"
+            android:text="Messaging"
             android:id="@+id/radioButton1"
             android:checked="true"
             android:textAlignment="textStart"
@@ -37,7 +42,32 @@
             android:checked="false"
             android:textAlignment="textStart"
             android:layout_gravity="left|center" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Music"
+            android:id="@+id/radioButton4"
+            android:checked="false"
+            android:textAlignment="textStart"
+            android:layout_gravity="left|center" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Miscellaneous"
+            android:id="@+id/radioButton5"
+            android:checked="false"
+            android:textAlignment="textStart"
+            android:layout_gravity="left|center" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NULL"
+            android:id="@+id/radioButton6"
+            android:checked="false"
+            android:textAlignment="textStart"
+            android:layout_gravity="left|center" />
     </RadioGroup>
+    </ScrollView>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
