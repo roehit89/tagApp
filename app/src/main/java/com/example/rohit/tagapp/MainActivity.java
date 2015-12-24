@@ -76,14 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
 public class getApplications extends AsyncTask<Void, Void, Void>{
 
-
     ArrayList <ApplicationInfo> appList = new ArrayList<ApplicationInfo>();
 
     @Override
     protected Void doInBackground(Void... params) {
         appList = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(packageManager.GET_META_DATA);
       //  Collections.sort(appList, appInfo.name); // try and sort list
-
         for( ApplicationInfo appInfo : appList)
         {
             if(packageManager.getLaunchIntentForPackage(appInfo.packageName)!=null) { // display only installed apps.
@@ -94,17 +92,11 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 myAppInfo.appTag =  sqlActions.fetchSqlDataByTag(myAppInfo.appName);
 
                 sqlActions.insertValues(myAppInfo.appName,myAppInfo.appIcon.toString(),myAppInfo.appTag);
-
-                //  finaldata.add(appInfo);
                 finalData.add(myAppInfo);
             }
         }
-//        Collections.sort(finaldata);
-
         myAdapter = new myAdapter(finalData, context);
-
         listView = (ListView)findViewById(R.id.fullListView);
-
         return null;
     }
 
@@ -122,42 +114,31 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 // view.setBackground(new ColorDrawable(Color.parseColor("#ffffff")));
                 customActionBar.setActionBarColor("#831919");
             }
-
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
             }
         });
-
-
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //  ApplicationInfo app = (ApplicationInfo) finaldata.get(position);
-
 
                 //   view.setBackground(new ColorDrawable(Color.parseColor("#f3f1f3")));
-
                 final MyAppInfo myAppInfo = finalData.get(position);
 
                 newTag.setVisibility(View.VISIBLE);
                 oldTag.setVisibility(View.VISIBLE);
                 //Intent intent = packageManager.getLaunchIntentForPackage(app.packageName); // this is used to launch app.
                 //  startActivity(intent);
-                //  barTitle = (TextView) findViewById(R.id.textViewTitle);
-                //barTitle.setText(app.loadLabel(packageManager)); // to get app name.
                 barTitle.setText(myAppInfo.appName);
                 // barTitle.setBackgroundColor(Color.parseColor("#00001a"));
                 customActionBar.setActionBarColor("#00001a");
-
 
                 oldTag.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialogActions.showDialog(context, myAppInfo.appName); // show dialog box for tags/labels
                         confirmButton = (Button) dialogActions.getDialogButtonId();
-
                         confirmButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -189,20 +170,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
             }
         });
         newTag.setVisibility(View.INVISIBLE);
-
         ArrayList<MyAppInfo> test = sqlActions.getAllApps();
-
-//
-//        for(MyAppInfo obj: test)
-//        {
-//            Log.i("app tag ",obj.appTag);
-//            Log.i("app name ",obj.appName);
-//           // Log.i("app icon ", String.valueOf(obj.appIcon));
-//        }
-
     }
 }
-
-
-
 }
