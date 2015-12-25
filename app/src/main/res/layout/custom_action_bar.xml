@@ -20,32 +20,36 @@
         android:textSize="20dp"
         android:textStyle="bold"
         android:background="@android:color/transparent"
-        android:layout_alignParentStart="true"
-        android:layout_centerInParent="true" />
+
+        android:layout_centerInParent="true"
+        android:layout_alignLeft="@+id/newTagId"
+        android:layout_alignParentLeft="true" />
 
 
     <ImageButton
-        android:id="@+id/oldTag"
+        android:id="@+id/oldTagId"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
+
         android:layout_marginRight="40dp"
-        android:layout_centerInParent="true"
+
         android:src="@mipmap/tag"
         android:background="@android:color/transparent"
-        android:layout_marginLeft="50dp" />
+        android:layout_marginLeft="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true" />
 
     <ImageButton
-        android:id="@+id/newTag"
+        android:id="@+id/newTagId"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentStart="false"
-        android:layout_toStartOf="@id/oldTag"
-        android:layout_centerInParent="true"
+
         android:src="@mipmap/add1"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:layout_toStartOf="@id/oldTagId"
+        android:layout_centerInParent="true" />
 
 
 </RelativeLayout>

@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
   //  LayoutInflater layoutInflater;
     View dialogView;
     AlertDialog.Builder dialogBuilder;
-    Button confirmButton = null;
+    Button oldConfirmButton = null, newConfirmButton = null;
     ImageButton newTag = null;
     ImageButton oldTag = null;
     DialogActions dialogActions;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     CustomActionBar customActionBar = new CustomActionBar();
     SqlActions sqlActions;
     TextView barTitle = null;
+    EditText newTagText = null;
 
 
     @Override
@@ -68,11 +70,12 @@ public class MainActivity extends AppCompatActivity {
          packageManager = getPackageManager();
          new getApplications().execute();
         customActionBar.customActionBar(getSupportActionBar(), context);
-        newTag = (ImageButton)findViewById(R.id.newTag);
-        oldTag = (ImageButton)findViewById(R.id.oldTag);
+        newTag = (ImageButton)findViewById(R.id.newTagId);
+        oldTag = (ImageButton)findViewById(R.id.oldTagId);
         newTag.setVisibility(View.GONE);
         oldTag.setVisibility(View.GONE);
         barTitle = (TextView) findViewById(R.id.textViewTitle);
+
      //   radioGroup = (RadioGroup) dialogActions.getRadioGroupId();
     }
 
@@ -142,10 +145,10 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 oldTag.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialogActions.showDialog(context, myAppInfo.appName); // show dialog box for tags/labels
+                        dialogActions.showOldTagsDialog(context, myAppInfo.appName); // show dialog box for tags/labels
 
-                        confirmButton = (Button) dialogActions.getDialogButtonId();
-                        confirmButton.setOnClickListener(new View.OnClickListener() {
+                        oldConfirmButton = (Button) dialogActions.getOldDialogButtonId();
+                        oldConfirmButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 radioGroup = (RadioGroup) dialogActions.getRadioGroupId();
@@ -154,14 +157,36 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                 //    String radiovalue = ((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                                 myAppInfo.appTag = dialogActions.checkedRadioButtonText(radioGroup);
                                 sqlActions.updateTable(myAppInfo.appTag, myAppInfo.appName);// update tag
-                             //   sqlActions.fetchSqlDataByTag("browsers");
+                                //   sqlActions.fetchSqlDataByTag("browsers");
                                 myAdapter.notifyDataSetChanged(); // notify that data was changed.
-                                dialogActions.dismissDialog();
+                                dialogActions.dismissOldDialog();
                                 newTag.setVisibility(View.INVISIBLE);
                                 oldTag.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
+                });
+
+                newTag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogActions.showNewTagDialog(context, myAppInfo.appName);
+                       // setContentView(R.layout.newlabledialog);
+                        newTagText = (EditText) dialogActions.getEditTextid();
+                        newConfirmButton = (Button) dialogActions.getNewDialogButtonId();
+                        newConfirmButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String newTag = newTagText.getText().toString();
+                                Log.i("new tag value = ",newTag);
+                                myAppInfo.appTag = newTag;
+                                dialogActions.dismissNewDialog();
+
 
                             }
                         });
+
+
                     }
                 });
 

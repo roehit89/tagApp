@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
  */
 public class DialogActions {
 
-    Dialog dialog;
+    Dialog oldTagsDialog, newTagsDialog;
     Button button;
 
     Context context;
@@ -24,30 +24,51 @@ public class DialogActions {
         this.context = context;
         this.activity = activity;
     }
-    public void showDialog(Context context, String appName)
+    public void showOldTagsDialog(Context context, String appName)
     {
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.labeldialog);
-        dialog.setTitle(appName);
-        dialog.show();
+        oldTagsDialog = new Dialog(context);
+        oldTagsDialog.setContentView(R.layout.labeldialog);
+        oldTagsDialog.setTitle(appName);
+        oldTagsDialog.show();
         //context = context;
     }
-    View getDialogButtonId(){
-        return dialog.findViewById(R.id.ConfirmButton);
+    public void showNewTagDialog(Context context, String appName)
+    {
+        newTagsDialog = new Dialog(context);
+        newTagsDialog.setContentView(R.layout.newlabledialog);
+        newTagsDialog.setTitle(appName);
+        newTagsDialog.show();
+        //context = context;
+    }
+
+    View getEditTextid()
+    {
+       return  newTagsDialog.findViewById(R.id.newTagText);
+    }
+    View getOldDialogButtonId(){
+        return oldTagsDialog.findViewById(R.id.OldConfirmButton);
+    }
+    View getNewDialogButtonId(){
+        return newTagsDialog.findViewById(R.id.newConfirmButton);
     }
 
     View getRadioGroupId(){
-        return dialog.findViewById(R.id.radioGroupdId);
+        return oldTagsDialog.findViewById(R.id.radioGroupdId);
     }
 
     String checkedRadioButtonText(RadioGroup radioGroup)
     {
-        return ((RadioButton)dialog.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+        return ((RadioButton)oldTagsDialog.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
     }
 
-    void dismissDialog()
+    void dismissOldDialog()
     {
-        dialog.dismiss();
+        oldTagsDialog.dismiss();
+    }
+
+    void dismissNewDialog()
+    {
+        newTagsDialog.dismiss();
     }
 
     
