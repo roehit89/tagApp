@@ -228,8 +228,8 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                 int length1 = newLabelsList.size();
                                 newLabelsList.add(newTag);
                                 int length2 = newLabelsList.size();
-                                if(length2>length1) // only if unique tag is added should it be added to drawerarray. drawerArray is an arrayList so duplicate elements might get inserted.
-                                drawerArray.add(newTag);
+                                if (length2 > length1) // only if unique tag is added should it be added to drawerarray. drawerArray is an arrayList so duplicate elements might get inserted.
+                                    drawerArray.add(newTag);
 
                             }
                         });
@@ -254,22 +254,22 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                                @Override
                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                                 //  Intent intent = new Intent(context,FilteredResult.class);
+                                                   //  Intent intent = new Intent(context,FilteredResult.class);
                                                    //intent.putExtra("myAppInfoArray",myAppInfo);
 
-                                                  // intent.putStringArrayListExtra("myAppInfoArray",finalData);
+                                                   // intent.putStringArrayListExtra("myAppInfoArray",finalData);
 //                                                   intent.putParcelableArrayListExtra("myAppInfoArray",finalData);
 //                                                   intent.putExtra("selectedLabel",drawerArray.get(position));
 //                                                   startActivity(intent);
                                                    filteredArrayList.clear();
-                                                   Log.i("hello",drawerArray.get(position));
+                                                   Log.i("hello", drawerArray.get(position));
                                                    mDrawerLayout.closeDrawers();
-                                                   for(int i = 0;i<finalData.size(); i++) {
+                                                   for (int i = 0; i < finalData.size(); i++) {
                                                        Log.i("arrayitemName", finalData.get(i).appName);
                                                        Log.i("arrayitemLabel", finalData.get(i).appTag);
-                                                        if(finalData.get(i).appTag.equals(drawerArray.get(position))){
-                                                            filteredArrayList.add(finalData.get(i));
-                                                        }
+                                                       if (finalData.get(i).appTag.equals(drawerArray.get(position))) {
+                                                           filteredArrayList.add(finalData.get(i));
+                                                       }
                                                    }
                                                    myAdapter = new myAdapter(filteredArrayList, context);
                                                    listView.deferNotifyDataSetChanged();
@@ -277,48 +277,83 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                                    backButton.setVisibility(View.VISIBLE);
                                                    barTitle.setText(drawerArray.get(position));
 
-                                                  // listView.deferNotifyDataSetChanged();
+                                                   // listView.deferNotifyDataSetChanged();
 
-                                                   for(int i = 0;i<filteredArrayList.size();i++)
-                                                   {
-                                                       Log.i("selected label ",filteredArrayList.get(i).appTag);
+                                                   for (int i = 0; i < filteredArrayList.size(); i++) {
+                                                       Log.i("selected label ", filteredArrayList.get(i).appTag);
                                                    }
                                                }
                                            }
         );
 
-        mDrawerList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                drawerArray.remove(position);
-                newLabelsList.remove(position);
-              //  myAdapter = new myAdapter(drawerArray, context);
-                drawerAdapter = new ArrayAdapter<String>(context, R.layout.drawerlayoutsinglelist, drawerArray);
-                mDrawerList.setAdapter(drawerAdapter);
+        mDrawerList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { // to remove tag
+                                                   @Override
+                                                   public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                mDrawerList.deferNotifyDataSetChanged();
-                listView.deferNotifyDataSetChanged();
-
-                listView.setAdapter(myAdapter);
+                                                       for (int i = 0; i < drawerArray.size(); i++) {
+                                                           Log.i("drawerArray", drawerArray.get(i));
+                                                       }
+                                                       for (Object eachLabel : newLabelsList) {
+                                                           Log.i("new label list", eachLabel.toString());
+                                                       }
 
 
-                return false;
+                                                       newLabelsList.remove(position); // remove data from dialog box
+
+
+                                                       Log.i("drawerArray", "after remove");
+                                                       for (int i = 0; i < drawerArray.size(); i++) {
+                                                           Log.i("drawerArray", drawerArray.get(i));
+                                                       }
+                                                       int cnt = 0;
+                                                       for (Object eachLabel : newLabelsList) {
+                                                           if (eachLabel.toString().equalsIgnoreCase(drawerArray.get(position))) {
+                                                               Log.i("milala re", eachLabel.toString());
+                                                               newLabelsList.remove(eachLabel);
+                                                               break;
+                                                           }
+                                                           cnt++;
+                                                       }
+                                                       drawerArray.remove(position);
+
+                                                       for (Object eachLabel : newLabelsList) {
+                                                       //    if (eachLabel.toString().equalsIgnoreCase(drawerArray.get(position))) {
+                                                               Log.i("milalya nantar", eachLabel.toString());
+                                                         //  }
+                                                       }
+                                                       //  myAdapter = new myAdapter(drawerArray, context);
+                                                       drawerAdapter = new ArrayAdapter<String>(context, R.layout.drawerlayoutsinglelist, drawerArray);
+                                                       mDrawerList.setAdapter(drawerAdapter);
+
+                                                       mDrawerList.deferNotifyDataSetChanged();
+                                                       listView.deferNotifyDataSetChanged();
+
+                                                       listView.setAdapter(myAdapter);
+
+
+                                                       return false;
+                                                   }
+                                               }
+
+                );
+
+        backButton.setOnClickListener(new View.OnClickListener()
+
+                                      {
+                                          @Override
+                                          public void onClick(View v) {
+                                              backButton.setVisibility(View.GONE);
+                                              myAdapter = new myAdapter(finalData, context);
+                                              listView.deferNotifyDataSetChanged();
+                                              listView.setAdapter(myAdapter);
+                                              customActionBar.setActionBarColor("#831919");
+                                              barTitle.setText("TagApp");
+                                              oldTag.setVisibility(View.GONE);
+                                              newTag.setVisibility(View.GONE);
+                                          }
+                                      }
+
+                );
             }
-        });
-
-    backButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            backButton.setVisibility(View.GONE);
-            myAdapter = new myAdapter(finalData, context);
-            listView.deferNotifyDataSetChanged();
-            listView.setAdapter(myAdapter);
-            customActionBar.setActionBarColor("#831919");
-            barTitle.setText("TagApp");
-            oldTag.setVisibility(View.GONE);
-            newTag.setVisibility(View.GONE);
         }
-    });
     }
-}
-}
