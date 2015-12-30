@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Created by Rohit on 12/22/2015.
  */
@@ -24,10 +29,39 @@ public class DialogActions {
         this.context = context;
         this.activity = activity;
     }
-    public void showOldTagsDialog(Context context, String appName)
+    public void showOldTagsDialog(Context context, String appName, HashSet<String> newLabelsList)
     {
         oldTagsDialog = new Dialog(context);
         oldTagsDialog.setContentView(R.layout.labeldialog);
+        RadioGroup group = (RadioGroup) oldTagsDialog.findViewById(R.id.radioGroupdId);
+        group.clearCheck(); // to remove all previous radio buttons
+        group.removeAllViews();
+        RadioButton button;
+        int cnt = 0;
+        //HashSet<String> uniqueTags = new HashSet<String>(newLabelsList); // find unique tags and only display them.
+
+//        for(Object eachLabel : newLabelsList){
+//            String temp = eachLabel.toString();
+//           // uniqueTags.add(temp);
+//            Log.i("added in hashset", eachLabel.toString());
+//        }
+
+        Log.i("length= ", String.valueOf(newLabelsList.size()));
+
+        for(Object eachLabel : newLabelsList){
+            Log.i("should be unique",eachLabel.toString());
+            button = new RadioButton(context);
+            button.setText(eachLabel.toString());
+          //  button.setId(Integer.parseInt("radioButton"+cnt));
+            group.addView(button);
+            cnt++;
+        }
+
+//        for(int i = 0; i < 3; i++) {
+//            button = new RadioButton(context);
+//            button.setText("Button " + i);
+//            group.addView(button);
+//        }
         oldTagsDialog.setTitle(appName);
         oldTagsDialog.show();
         //context = context;
@@ -71,6 +105,17 @@ public class DialogActions {
         newTagsDialog.dismiss();
     }
 
+//    void addRadioButton(String radioButtonName, Context context){
+//       // RadioGroup radioGroup = new RadioGroup(context);
+//        radioGroup = (RadioGroup)oldTagsDialog.findViewById(R.id.radioGroupdId);
+//        RadioButton radioButton = new RadioButton(context);
+//
+//        radioButton.setText(radioButtonName);
+//        radioGroup.addView(radioButton);
+//        //radioButton.setId("");
+//
+//
+//    }
     
 
 

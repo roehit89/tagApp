@@ -16,56 +16,15 @@
         android:layout_gravity="center"
         android:layout_margin="20dp">
 
-        <RadioButton
+        <!--RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Messaging"
             android:id="@+id/radioButton1"
             android:checked="true"
             android:textAlignment="textStart"
-            android:layout_gravity="left|center" />
+            android:layout_gravity="left|center" /-->
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="browsers"
-            android:id="@+id/radioButton2"
-            android:checked="false"
-            android:textAlignment="textStart"
-            android:layout_gravity="left|center" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shopping"
-            android:id="@+id/radioButton3"
-            android:checked="false"
-            android:textAlignment="textStart"
-            android:layout_gravity="left|center" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Music"
-            android:id="@+id/radioButton4"
-            android:checked="false"
-            android:textAlignment="textStart"
-            android:layout_gravity="left|center" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Miscellaneous"
-            android:id="@+id/radioButton5"
-            android:checked="false"
-            android:textAlignment="textStart"
-            android:layout_gravity="left|center" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NULL"
-            android:id="@+id/radioButton6"
-            android:checked="false"
-            android:textAlignment="textStart"
-            android:layout_gravity="left|center" />
     </RadioGroup>
     </ScrollView>
     <Button
