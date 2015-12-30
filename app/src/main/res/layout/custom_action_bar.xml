@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
+    <ImageButton
+        android:id="@+id/backButtonId"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_action_back"
+        android:visibility="invisible"
+        android:layout_alignParentLeft="true"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent" />
 
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|center"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:singleLine="true"
         android:text="TagApp"
         android:maxWidth="120dp"
@@ -23,9 +33,14 @@
 
         android:layout_centerInParent="true"
         android:layout_alignLeft="@+id/newTagId"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/backButtonId"
+        android:paddingLeft="10dp"
+        android:gravity="left|start" />
 
-
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
     <ImageButton
         android:id="@+id/oldTagId"
         android:scaleType="fitCenter"
@@ -33,13 +48,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
 
-        android:layout_marginRight="40dp"
-
         android:src="@mipmap/tag"
         android:background="@android:color/transparent"
-        android:layout_marginLeft="50dp"
+
         android:layout_alignParentRight="true"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:layout_gravity="center|right"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="30dp" />
 
     <ImageButton
         android:id="@+id/newTagId"
@@ -49,7 +65,12 @@
         android:src="@mipmap/add1"
         android:background="@android:color/transparent"
         android:layout_toStartOf="@id/oldTagId"
-        android:layout_centerInParent="true" />
-
-
+        android:layout_centerInParent="true"
+        android:layout_gravity="center|right"
+        android:adjustViewBounds="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginRight="30dp" />
 </RelativeLayout>
+
+
+</LinearLayout>

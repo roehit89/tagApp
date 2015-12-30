@@ -36,4 +36,10 @@ public class CustomActionBar {
         this.color = color;
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
     }
+
+
+    public void setActionBarTitle(String hello) {
+        actionBar.setWindowTitle("hello");
+        actionBar.setTitle("hello");
+    }
 }

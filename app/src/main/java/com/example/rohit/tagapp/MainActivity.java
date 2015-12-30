@@ -12,7 +12,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Parcel;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     Button oldConfirmButton = null, newConfirmButton = null;
     ImageButton newTag = null;
     ImageButton oldTag = null;
+    ImageButton backButton = null;
     DialogActions dialogActions;
     RadioGroup radioGroup;
     CustomActionBar customActionBar = new CustomActionBar();
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
     ArrayAdapter drawerAdapter;
+    ArrayList<MyAppInfo> filteredArrayList = new ArrayList<MyAppInfo>();
 
     ArrayList<String> drawerArray= new ArrayList<String>();
 
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         oldTag = (ImageButton)findViewById(R.id.oldTagId);
         newTag.setVisibility(View.GONE);
         oldTag.setVisibility(View.GONE);
+        backButton = (ImageButton)findViewById(R.id.backButtonId);
         barTitle = (TextView) findViewById(R.id.textViewTitle);
 
         drawerArray.add("Shopping");
@@ -119,7 +124,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
         for( ApplicationInfo appInfo : appList)
         {
             if(packageManager.getLaunchIntentForPackage(appInfo.packageName)!=null) { // display only installed apps.
-                MyAppInfo myAppInfo = new MyAppInfo();
+                MyAppInfo myAppInfo = new MyAppInfo(Parcel.obtain());
                 myAppInfo.appName = (String) appInfo.loadLabel(packageManager);
                 myAppInfo.appIcon = appInfo.loadIcon(packageManager);
                 myAppInfo.appTag = ""; // write query here to fetch tag from database.
@@ -244,6 +249,76 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
         });
         newTag.setVisibility(View.INVISIBLE);
        // ArrayList<MyAppInfo> test = sqlActions.getAllApps();
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                               @Override
+                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                                 //  Intent intent = new Intent(context,FilteredResult.class);
+                                                   //intent.putExtra("myAppInfoArray",myAppInfo);
+
+                                                  // intent.putStringArrayListExtra("myAppInfoArray",finalData);
+//                                                   intent.putParcelableArrayListExtra("myAppInfoArray",finalData);
+//                                                   intent.putExtra("selectedLabel",drawerArray.get(position));
+//                                                   startActivity(intent);
+                                                   filteredArrayList.clear();
+                                                   Log.i("hello",drawerArray.get(position));
+                                                   mDrawerLayout.closeDrawers();
+                                                   for(int i = 0;i<finalData.size(); i++) {
+                                                       Log.i("arrayitemName", finalData.get(i).appName);
+                                                       Log.i("arrayitemLabel", finalData.get(i).appTag);
+                                                        if(finalData.get(i).appTag.equals(drawerArray.get(position))){
+                                                            filteredArrayList.add(finalData.get(i));
+                                                        }
+                                                   }
+                                                   myAdapter = new myAdapter(filteredArrayList, context);
+                                                   listView.deferNotifyDataSetChanged();
+                                                   listView.setAdapter(myAdapter);
+                                                   backButton.setVisibility(View.VISIBLE);
+                                                   barTitle.setText(drawerArray.get(position));
+
+                                                  // listView.deferNotifyDataSetChanged();
+
+                                                   for(int i = 0;i<filteredArrayList.size();i++)
+                                                   {
+                                                       Log.i("selected label ",filteredArrayList.get(i).appTag);
+                                                   }
+                                               }
+                                           }
+        );
+
+        mDrawerList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                drawerArray.remove(position);
+                newLabelsList.remove(position);
+              //  myAdapter = new myAdapter(drawerArray, context);
+                drawerAdapter = new ArrayAdapter<String>(context, R.layout.drawerlayoutsinglelist, drawerArray);
+                mDrawerList.setAdapter(drawerAdapter);
+
+                mDrawerList.deferNotifyDataSetChanged();
+                listView.deferNotifyDataSetChanged();
+
+                listView.setAdapter(myAdapter);
+
+
+                return false;
+            }
+        });
+
+    backButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            backButton.setVisibility(View.GONE);
+            myAdapter = new myAdapter(finalData, context);
+            listView.deferNotifyDataSetChanged();
+            listView.setAdapter(myAdapter);
+            customActionBar.setActionBarColor("#831919");
+            barTitle.setText("TagApp");
+            oldTag.setVisibility(View.GONE);
+            newTag.setVisibility(View.GONE);
+        }
+    });
     }
 }
 }

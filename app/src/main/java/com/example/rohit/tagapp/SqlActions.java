@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class SqlActions extends SQLiteOpenHelper {
 
         while(cursor.isAfterLast() == false)
         {
-            MyAppInfo myAppInfo = new MyAppInfo();
+            MyAppInfo myAppInfo = new MyAppInfo(Parcel.obtain());
             myAppInfo.appName = cursor.getString(cursor.getColumnIndex("name"));
             myAppInfo.appTag = cursor.getString(cursor.getColumnIndex("tag"));
           //  myAppInfo.appIcon = Drawable.createFromPath(cursor.getString(cursor.getColumnIndex("icon")));
