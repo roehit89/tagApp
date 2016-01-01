@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
@@ -48,6 +49,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
@@ -106,12 +108,49 @@ public class MainActivity extends AppCompatActivity {
         navButton = (ImageButton)findViewById(R.id.navButtonId);
         barTitle = (TextView) findViewById(R.id.textViewTitle);
 
-        drawerArray.add("Bank");
-        drawerArray.add("Browsers");
-        drawerArray.add("Messaging");
-        drawerArray.add("Music");
-        drawerArray.add("Online shopping");
-        drawerArray.add("Photo editor");
+
+
+        final String PREFS_NAME = "MyPrefsFile";
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        if(settings.getBoolean("my_first_time", true)){
+            drawerArray.add("Bank");
+            drawerArray.add("Browsers");
+            drawerArray.add("Messaging");
+            drawerArray.add("Music");
+            drawerArray.add("Online shopping");
+            drawerArray.add("Photo editor");
+
+            newLabelsList.add("Bank");
+            newLabelsList.add("Browsers");
+            newLabelsList.add("Messaging");
+            newLabelsList.add("Music");
+            newLabelsList.add("Online shopping");
+            newLabelsList.add("Photo editor");
+
+            for(String string : drawerArray) {
+                sqlActions.insertValuesInAllTags(string);
+            }
+            Log.i("Comments", "First time");
+            settings.edit().putBoolean("my_first_time", false).commit();
+        }
+        else{
+            Log.i("app run for the 2nd time","done");
+            ArrayList resultTags = sqlActions.fetchSqlDataByTagFromAllTags();
+
+            for(Object eachTag : resultTags)
+            {
+                drawerArray.add(String.valueOf(eachTag));
+                newLabelsList.add(String.valueOf(eachTag));
+                Log.i("fetched tag",eachTag.toString());
+            }
+
+
+        }
+
+
+
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.myDrawerLayout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer_listView);
@@ -120,12 +159,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setAdapter(drawerAdapter);
         //mDrawerList.setScrimColor(Color.TRANSPARENT);
 
-        newLabelsList.add("Bank");
-        newLabelsList.add("Browsers");
-        newLabelsList.add("Messaging");
-        newLabelsList.add("Music");
-        newLabelsList.add("Online shopping");
-        newLabelsList.add("Photo editor");
 
 
      //   backButton.setImageResource(R.mipmap.ic_drawer);
@@ -148,7 +181,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
     }
     @Override
     protected Void doInBackground(Void... params) {
-        final String PREFS_NAME = "MyPrefsFile";
+
         appList = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(packageManager.GET_META_DATA);
       //  Collections.sort(appList, appInfo.name); // try and sort list
         for( ApplicationInfo appInfo : appList)
@@ -158,14 +191,14 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                 myAppInfo.appName = (String) appInfo.loadLabel(packageManager);
                 myAppInfo.appIcon = appInfo.loadIcon(packageManager);
                 myAppInfo.launchIntent = appInfo.packageName;
-                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
 
               //  myAppInfo.appTag = ""; // write query here to fetch tag from database.
-                myAppInfo.appTag = sqlActions.fetchSqlDataByTag(myAppInfo.appName);
+                myAppInfo.appTag = sqlActions.fetchSqlDataByTagFromAllApps(myAppInfo.appName);
 
 
           //      sqlActions.insertValues(myAppInfo.appName,myAppInfo.appIcon.toString(),myAppInfo.appTag);
-                sqlActions.insertValues(myAppInfo.appName,myAppInfo.appTag);
+                sqlActions.insertValuesInAllApps(myAppInfo.appName, myAppInfo.appTag);
                 finalData.add(myAppInfo);
             }
         }
@@ -259,7 +292,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                 //  Log.i(TAG, String.valueOf(dialogActions.getCh);
                                 //    String radiovalue = ((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                                 myAppInfo.appTag = dialogActions.checkedRadioButtonText(radioGroup);
-                                sqlActions.updateTable(myAppInfo.appTag, myAppInfo.appName);// update tag
+                                sqlActions.updateTableAllApps(myAppInfo.appTag, myAppInfo.appName);// update tag
                                 //   sqlActions.fetchSqlDataByTag("browsers");
                                 myAdapter.notifyDataSetChanged(); // notify that data was changed.
                                 drawerAdapter.notifyDataSetChanged(); // notify that drawer data was changed.
@@ -290,7 +323,8 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                     }
                                 }
                                 myAppInfo.appTag = newTag;
-                                sqlActions.updateTable(myAppInfo.appTag, myAppInfo.appName);// update tag
+                                sqlActions.updateTableAllApps(myAppInfo.appTag, myAppInfo.appName);// update tag
+                                sqlActions.insertValuesInAllTags(myAppInfo.appTag); // insert in allTags
                                 dialogActions.dismissNewDialog();
                                 int length1 = newLabelsList.size();
                                 newLabelsList.add(newTag);
@@ -374,7 +408,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                                        for (Object eachLabel : newLabelsList) {
                                                            Log.i("new label list", eachLabel.toString());
                                                        }
-
+                                                       sqlActions.deleteTagFromAllTags(selectedTag); // remove tag from tags table.
 
                                                        newLabelsList.remove(position); // remove data from dialog box
 
@@ -402,7 +436,7 @@ public class getApplications extends AsyncTask<Void, Void, Void>{
                                                        for (MyAppInfo myAppInfo : finalData) {
                                                            if (myAppInfo.appTag.equalsIgnoreCase(selectedTag)) {
                                                                myAppInfo.appTag = "";
-                                                               sqlActions.updateTable(myAppInfo.appTag, myAppInfo.appName);// update tag
+                                                               sqlActions.updateTableAllApps(myAppInfo.appTag, myAppInfo.appName);// update tag
                                                            }
                                                        }
                                                        //  myAdapter = new myAdapter(drawerArray, context);
