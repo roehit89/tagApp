@@ -14,10 +14,12 @@ public class MyAppInfo implements Parcelable {
     String appName;
     Drawable appIcon;
     String appTag;
+    String launchIntent;
 
     protected MyAppInfo(Parcel in) {
         appName = in.readString();
         appTag = in.readString();
+        launchIntent = in.readString();
     }
 
     public static final Creator<MyAppInfo> CREATOR = new Creator<MyAppInfo>() {
@@ -41,5 +43,6 @@ public class MyAppInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(appName);
         dest.writeString(appTag);
+        dest.writeString(launchIntent);
     }
 }

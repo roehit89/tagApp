@@ -20,7 +20,7 @@ public class SqlActions extends SQLiteOpenHelper {
     public static final String tableName = "allApps";
     public static final String id = "id";
     public static final String appName = "appName";
-    public static final String appIcon = "appIcon";
+ //   public static final String appIcon = "appIcon";
     public static final String appTag = "appTag";
 
     SqlActions(Context context)
@@ -30,9 +30,10 @@ public class SqlActions extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS "+tableName);
-        Log.i("table dropped","done");
-        db.execSQL("create table " + tableName + "(id integer primary key, name text, icon text, tag text)");
+        db.execSQL("DROP TABLE IF EXISTS " + tableName);
+        Log.i("table dropped", "done");
+   //     db.execSQL("create table " + tableName + "(id integer primary key, name text, icon text, tag text)");
+        db.execSQL("create table " + tableName + "(id integer primary key, name text, tag text)");
         Log.i("database created", "done");
     }
 
@@ -41,12 +42,13 @@ public class SqlActions extends SQLiteOpenHelper {
 
     }
 
-    public boolean insertValues(String name, String icon, String tag){
+    //public boolean insertValues(String name, String icon, String tag){
+    public boolean insertValues(String name, String tag){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("name",name);
-        contentValues.put("icon",icon);
+        contentValues.put("name", name);
+      //  contentValues.put("icon",icon);
         contentValues.put("tag",tag);
 
         db.insert(tableName,null,contentValues);
@@ -62,11 +64,17 @@ public class SqlActions extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from "+tableName+" where name = '"+appName+"'",null);
 
         cursor.moveToFirst();
-        Log.i("fetched appname by tag", cursor.getString(0)); // fetches id
-        Log.i("fetched appname by tag",cursor.getString(1));// name
-        Log.i("fetched appname by tag",cursor.getString(2));// icon
-        Log.i("fetched appname by tag",cursor.getString(3));// tag
-        return cursor.getString(3);
+//        Log.i("fetched appname by tag", cursor.getString(0)); // fetches id
+//        Log.i("fetched appname by tag",cursor.getString(1));// name
+//        Log.i("fetched appname by tag",cursor.getString(2));// icon
+//        Log.i("fetched appname by tag",cursor.getString(3));// tag
+        //return cursor.getString(3);
+        try{
+            return cursor.getString(2);
+        }
+        catch (Exception e){
+            return "";
+        }
     }
 
     public void updateTable(String newTag, String appName)

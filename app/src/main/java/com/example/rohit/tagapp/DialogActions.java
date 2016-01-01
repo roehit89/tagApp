@@ -52,9 +52,9 @@ public class DialogActions {
             Log.i("should be unique",eachLabel.toString());
             button = new RadioButton(context);
             button.setText(eachLabel.toString());
+           // button.setButtonTintList();
           //  button.setId(Integer.parseInt("radioButton"+cnt));
             group.addView(button);
-            cnt++;
         }
 
 //        for(int i = 0; i < 3; i++) {
@@ -92,7 +92,13 @@ public class DialogActions {
 
     String checkedRadioButtonText(RadioGroup radioGroup)
     {
-        return ((RadioButton)oldTagsDialog.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+        String value;
+        if((RadioButton)oldTagsDialog.findViewById(radioGroup.getCheckedRadioButtonId())!=null){
+        value = ((RadioButton)oldTagsDialog.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+        Log.i("value",value);
+        return value;}
+        else
+            return "";
     }
 
     void dismissOldDialog()
