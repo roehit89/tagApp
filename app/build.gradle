@@ -5,8 +5,8 @@ android {
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        applicationId "com.example.rohit.tagapp"
-        minSdkVersion 9
+        applicationId "com.roehit89.rohit.tagapp"
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
